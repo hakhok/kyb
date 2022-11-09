@@ -1,5 +1,7 @@
+from cProfile import label
 import numpy as np
 from matplotlib import pyplot as plt
+import math
 
 def f(x):
     return 0.5*x**4 + 0.8*x**3 - 0.2*x**2 + 2*x+2
@@ -16,39 +18,44 @@ def f_dddx(x):
 def f_ddddx(x):
     return 12
 
-x = -5
-y0 = f(x)
-y1 = f(x)
-y2 = f(x)
-y3 = f(x)
-y4 = f(x)
-x_max = 3
-dx = 1
+def taylor1(x, x0):
+    d=x-x0
+    taylur_sum = f(x0)+f_dx(x0)*d
+    return taylur_sum
+def taylor2(x, x0):
+    d=x-x0
+    taylur_sum = f(x0)+f_dx(x0)*d+f_ddx(x0)*d**2 /math.factorial(2)
+    return taylur_sum
+def taylor3(x, x0):
+    d=x-x0
+    taylur_sum = f(x0)+f_dx(x0)*d+f_ddx(x0)*d**2 /math.factorial(2)+f_dddx(x0)*d**3 /math.factorial(3)
+    return taylur_sum
+def taylor4(x, x0):
+    d=x-x0
+    taylur_sum = f(x0)+f_dx(x0)*d+f_ddx(x0)*d**2 /math.factorial(2)+f_dddx(x0)*d**3 /math.factorial(3)+f_ddddx(x0)*d**4 /math.factorial(4)
+    return taylur_sum
 
-y_list0 = [y0]
-y_list1 = [y1]
-y_list2 = [y1]
-y_list3 = [y1]
-y_list4 = [y1]
-x_list = [x]
+x_0=-2
+x = np.linspace(-3,1.5,100)
 
-while x<=x_max:
-    y1 = f(x) + dx*f_dx(x)+((dx**2)/np.math.factorial(2))*f_ddx(x)+((dx**3)/np.math.factorial(3))*f_dddx(x)+((dx**4)/np.math.factorial(4))*f_ddddx(x)
-    y2 = f(x) + dx*f_dx(x)+((dx**2)/np.math.factorial(2))*f_ddx(x)+((dx**3)/np.math.factorial(3))*f_dddx(x)
-    y3 = f(x) + dx*f_dx(x)+((dx**2)/np.math.factorial(2))*f_ddx(x)
-    y4 = f(x) + dx*f_dx(x)
+plt.style.use('bmh')
 
-    x += dx
-    y_list1.append(y1)
-    y_list2.append(y2)
-    y_list3.append(y3)
-    y_list4.append(y4)
-    x_list.append(x)
-    y_list0.append(f(x))
+for x_0 in x:
+    plt.clf()
+    y = f(x)
+    y1 = taylor1(x, x_0)
+    y2 = taylor2(x, x_0)
+    y3 = taylor3(x, x_0)
+    y4 = taylor4(x, x_0)
 
-# plt.plot(x_list, y_list0, '--g')
-plt.plot(x_list, y_list1)
-plt.plot(x_list, y_list2)
-plt.plot(x_list, y_list3)
-plt.plot(x_list, y_list4)
+    # plt.plot(x, y,  label="Original")
+    plt.scatter(x_0, f(x_0))
+
+    plt.plot(x, y1, '--', label="Taylor 1")
+    plt.plot(x, y2, '--', label="Taylor 2")
+    plt.plot(x, y3, '--', label="Taylor 3")
+    plt.plot(x, y4, '--', label="Taylor 4")
+    plt.ylim([-2.5,15])
+    plt.legend()
+    plt.pause(0.08)
 plt.show()
