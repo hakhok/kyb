@@ -35,27 +35,28 @@ def taylor4(x, x0):
     taylur_sum = f(x0)+f_dx(x0)*d+f_ddx(x0)*d**2 /math.factorial(2)+f_dddx(x0)*d**3 /math.factorial(3)+f_ddddx(x0)*d**4 /math.factorial(4)
     return taylur_sum
 
-x_0=-2
+def taylor_anim(x, y_lim_1, y_lim_2):
+    plt.style.use('bmh')
+
+    for x_0 in x:
+        plt.clf()
+        y = f(x)
+        y1 = taylor1(x, x_0)
+        y2 = taylor2(x, x_0)
+        y3 = taylor3(x, x_0)
+        y4 = taylor4(x, x_0)
+
+        # plt.plot(x, y,  label="Original")
+        plt.scatter(x_0, f(x_0))
+
+        plt.plot(x, y1, '--', label="Taylor 1")
+        plt.plot(x, y2, '--', label="Taylor 2")
+        plt.plot(x, y3, '--', label="Taylor 3")
+        plt.plot(x, y4, '--', label="Taylor 4")
+        plt.ylim([y_lim_1,y_lim_2])
+        plt.legend()
+        plt.pause(0.08)
+    plt.show()
+
 x = np.linspace(-3,1.5,100)
-
-plt.style.use('bmh')
-
-for x_0 in x:
-    plt.clf()
-    y = f(x)
-    y1 = taylor1(x, x_0)
-    y2 = taylor2(x, x_0)
-    y3 = taylor3(x, x_0)
-    y4 = taylor4(x, x_0)
-
-    # plt.plot(x, y,  label="Original")
-    plt.scatter(x_0, f(x_0))
-
-    plt.plot(x, y1, '--', label="Taylor 1")
-    plt.plot(x, y2, '--', label="Taylor 2")
-    plt.plot(x, y3, '--', label="Taylor 3")
-    plt.plot(x, y4, '--', label="Taylor 4")
-    plt.ylim([-2.5,15])
-    plt.legend()
-    plt.pause(0.08)
-plt.show()
+taylor_anim(x, -2, 15)
