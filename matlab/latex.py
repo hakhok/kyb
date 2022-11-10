@@ -1,5 +1,4 @@
-import scipy.io
-mat = scipy.io.loadmat('config1.mat')
+import numpy as np
 
 def bmatrix(a):
     """Returns a LaTeX bmatrix
@@ -15,5 +14,11 @@ def bmatrix(a):
     rv +=  [r'\end{bmatrix}']
     return '\n'.join(rv)
 
-A = bmatrix(mat['A'])
-print(A)
+A = np.array([[12, 5, 2], [20, 4, 8], [ 2, 4, 3], [ 7, 1, 10]])
+print(bmatrix(A) + '\n')
+
+B = np.array([[1.2], [3.7], [0.2]])
+print(bmatrix(B) + '\n')
+
+C = np.array([1.2, 9.3, 0.6, -2.1])
+print(bmatrix(C) + '\n')
