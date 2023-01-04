@@ -1,0 +1,6 @@
+
+Bill breakdown: 
+Beef:           ...$49.99 
+Icecream:       ...$2.99 
+tip:            ...$2.19
+total:          ...$55.17
